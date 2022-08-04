@@ -45,6 +45,18 @@ export default function Pricing({ products }: Props) {
     }
   };
 
+  const compare = (a:any, b:any) => {
+    const firstMonthlyPrice = a.prices.filter((price):any => price.interval === 'month')
+    const secondMonthlyPrice = b.prices.filter((price):any => price.interval === 'month')
+    if (firstMonthlyPrice < secondMonthlyPrice) {
+      return -1;
+    }
+    if (firstMonthlyPrice > secondMonthlyPrice){
+      return 1;
+    }
+    return 0;
+  }
+
   if (!products.length)
     return (
       <section className="bg-black">
@@ -103,7 +115,7 @@ export default function Pricing({ products }: Props) {
           </div>
         </div>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
-          {products.map((product) => {
+          {products.sort(compare).map((product) => {
             const price = product?.prices?.find(
               (price) => price.interval === billingInterval
             );
