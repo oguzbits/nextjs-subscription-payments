@@ -14,28 +14,6 @@ interface Props {
 
 type BillingInterval = 'year' | 'month';
 
-interface IProduct {
-  active: boolean,
-  description: string | null,
-  id: string,
-  image: string | null,
-  name: string,
-  prices: [
-    {
-      active: boolean,
-      currency: string,
-      interval_count: number,
-      description: string | null,
-      id: string,
-      interval: string,
-      product_id: string,
-      trial_period_days: string | null,
-      type: 'recurring' | 'one time',
-      unit_amount: number
-    }
-  ]
-}
-
 export default function Pricing({ products }: Props) {
   const router = useRouter();
   const [billingInterval, setBillingInterval] =
@@ -67,14 +45,16 @@ export default function Pricing({ products }: Props) {
     }
   };
 
-  const compare = (a:IProduct, b:IProduct) => {
-    const firstMonthlyPrice = a.prices.filter((price) => price.interval === 'month')
-    const secondMonthlyPrice = b.prices.filter((price) => price.interval === 'month')
-    if (firstMonthlyPrice < secondMonthlyPrice) {
-      return -1;
-    }
-    if (firstMonthlyPrice > secondMonthlyPrice){
-      return 1;
+  const compare = (a: ProductWithPrice, b: ProductWithPrice) => {
+    if (a.prices && b.prices) {
+      const firstMonthlyPrice = a.prices.filter((price) => price.interval === 'month')
+      const secondMonthlyPrice = b.prices.filter((price) => price.interval === 'month')
+      if (firstMonthlyPrice < secondMonthlyPrice) {
+        return -1;
+      }
+      if (firstMonthlyPrice > secondMonthlyPrice){
+        return 1;
+      }
     }
     return 0;
   }
