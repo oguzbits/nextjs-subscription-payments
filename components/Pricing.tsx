@@ -46,15 +46,17 @@ export default function Pricing({ products }: Props) {
   };
 
   const compare = (a: ProductWithPrice, b: ProductWithPrice) => {
-    if (a.prices && b.prices) {
-      const firstMonthlyPrice = a.prices.filter((price) => price.interval === 'month')
-      const secondMonthlyPrice = b.prices.filter((price) => price.interval === 'month')
-      if (firstMonthlyPrice < secondMonthlyPrice) {
-        return -1;
-      }
-      if (firstMonthlyPrice > secondMonthlyPrice){
-        return 1;
-      }
+    const firstMonthlyPrice = a.prices
+      ?.filter((price) => price.interval === 'month')
+      ?.find(() => true)
+      ?.unit_amount
+    const secondMonthlyPrice = b.prices
+      ?.filter((price) => price.interval === 'month')
+      ?.find(() => true)
+      ?.unit_amount
+    if (firstMonthlyPrice && secondMonthlyPrice) {
+      if (firstMonthlyPrice < secondMonthlyPrice) return -1;
+      if (firstMonthlyPrice > secondMonthlyPrice) return 1;
     }
     return 0;
   }
